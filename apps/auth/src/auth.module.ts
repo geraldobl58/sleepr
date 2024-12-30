@@ -7,9 +7,9 @@ import { AuthService } from './auth.service';
 import { UsersModule } from './users/users.module';
 import { LoggerModule } from '@app/common';
 import { LocalStrategy } from './strategies/local.strategy';
+import { JwtStrategy } from './strategies/jwt.strategy';
 
 import * as Joi from 'joi';
-import { JwtStrategy } from './strategies/jwt.strategy';
 
 @Module({
   imports: [
@@ -21,14 +21,15 @@ import { JwtStrategy } from './strategies/jwt.strategy';
         MONGODB_URI: Joi.string().required(),
         JWT_SECRET: Joi.string().required(),
         JWT_EXPIRATION: Joi.string().required(),
-        PORT: Joi.number().required(),
+        HTTP_PORT: Joi.number().required(),
+        TCP_PORT: Joi.number().required(),
       }),
     }),
     JwtModule.registerAsync({
       useFactory: (configService: ConfigService) => ({
         secret: configService.get<string>('JWT_SECRET'),
         signOptions: {
-          expiresIn: `${configService.get<string>('JWT_EXPIRATION')}`,
+          expiresIn: `${configService.get<string>('JWT_EXPIRATION')}s`,
         },
       }),
       inject: [ConfigService],

@@ -1,56 +1,89 @@
 steps:
-  # Reservations
+  # reservations
   - name: 'gcr.io/cloud-builders/docker'
-    args: 
+    id: 'build-reservations'
+    args:
       [
         'build',
         '-t',
-        'us-east4-docker.pkg.dev/sleeper-446416/reservations/production',
+        'us-east4-docker.pkg.dev/disco-skyline-416915/reservations/production',
         '-f',
         'apps/reservations/Dockerfile',
         '.',
       ]
+    waitFor: ['-'] # The '-' indicates that this step begins immediately.
+ 
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'us-east4-docker.pkg.dev/sleeper-446416/reservations/production']
-  
-  # Auth
+    id: 'push-reservations'
+    args:
+      [
+        'push',
+        'us-east4-docker.pkg.dev/disco-skyline-416915/reservations/production',
+      ]
+    waitFor: ['build-reservations']
+ 
+  # auth
   - name: 'gcr.io/cloud-builders/docker'
-    args: 
+    id: 'build-auth'
+    args:
       [
         'build',
         '-t',
-        'us-east4-docker.pkg.dev/sleeper-446416/auth/production',
+        'us-east4-docker.pkg.dev/disco-skyline-416915/auth/production',
         '-f',
         'apps/auth/Dockerfile',
-        '.'
+        '.',
       ]
+    waitFor: ['-'] # The '-' indicates that this step begins immediately.
+ 
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'us-east4-docker.pkg.dev/sleeper-446416/auth/production']
-
-  # Notifications
+    id: 'push-auth'
+    args:
+      ['push', 'us-east4-docker.pkg.dev/disco-skyline-416915/auth/production']
+    waitFor: ['build-auth']
+ 
+  # payments
   - name: 'gcr.io/cloud-builders/docker'
-    args: 
+    id: 'build-payments'
+    args:
       [
         'build',
         '-t',
-        'us-east4-docker.pkg.dev/sleeper-446416/notifications/production',
-        '-f',
-        'apps/notifications/Dockerfile',
-        '.'
-      ]
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'us-east4-docker.pkg.dev/sleeper-446416/notifications/production']
-
-  # Payments
-  - name: 'gcr.io/cloud-builders/docker'
-    args: 
-      [
-        'build',
-        '-t',
-        'us-east4-docker.pkg.dev/sleeper-446416/payments/production',
+        'us-east4-docker.pkg.dev/disco-skyline-416915/payments/production',
         '-f',
         'apps/payments/Dockerfile',
-        '.'
+        '.',
       ]
+    waitFor: ['-'] # The '-' indicates that this step begins immediately.
+ 
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'us-east4-docker.pkg.dev/sleeper-446416/payments/production']
+    id: 'push-payments'
+    args:
+      [
+        'push',
+        'us-east4-docker.pkg.dev/disco-skyline-416915/payments/production',
+      ]
+    waitFor: ['build-payments']
+ 
+  # notifications
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'build-notifications'
+    args:
+      [
+        'build',
+        '-t',
+        'us-east4-docker.pkg.dev/disco-skyline-416915/notifications/production',
+        '-f',
+        'apps/notifications/Dockerfile',
+        '.',
+      ]
+    waitFor: ['-'] # The '-' indicates that this step begins immediately.
+ 
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'push-notifications'
+    args:
+      [
+        'push',
+        'us-east4-docker.pkg.dev/disco-skyline-416915/notifications/production',
+      ]
+    waitFor: ['build-notifications']

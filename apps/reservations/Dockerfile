@@ -4,14 +4,19 @@ WORKDIR /usr/src/app
 
 COPY package.json ./
 COPY package-lock.json ./
+COPY tsconfig.json tsconfig.json
+COPY nest-cli.json nest-cli.json
 
 RUN npm install -g npm
 
+COPY apps/reservations apps/reservations
+COPY libs libs
+
 RUN npm install
 
-COPY . .
+RUN cd apps/reservations && npm install
 
-RUN npm run build
+RUN npm run build reservations
 
 FROM node:alpine AS production
 

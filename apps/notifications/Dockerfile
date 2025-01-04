@@ -4,14 +4,19 @@ WORKDIR /usr/src/app
 
 COPY package.json ./
 COPY package-lock.json ./
+COPY tsconfig.json tsconfig.json
+COPY nest-cli.json nest-cli.json
 
 RUN npm install -g npm
 
+COPY apps/notifications apps/notifications
+COPY libs libs
+
 RUN npm install
 
-COPY . .
+RUN cd apps/notifications && npm install
 
-RUN npm run build
+RUN npm run build notifications
 
 FROM node:alpine AS production
 

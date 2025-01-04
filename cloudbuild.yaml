@@ -8,7 +8,7 @@ steps:
       'us-east4-docker.pkg.dev/sleeper-446416/reservations/production',
       '-f',
       'apps/reservations/Dockerfile',
-      '.'
+      '.',
     ]
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'us-east4-docker.pkg.dev/sleeper-446416/reservations/production']

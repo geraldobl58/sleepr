@@ -16,4 +16,4 @@ spec:
     spec:
       containers:
         - image: us-east4-docker.pkg.dev/sleeper-446416/notifications/production
-          name: production
+          name: notifications

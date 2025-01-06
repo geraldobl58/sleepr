@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - image: us-east4-docker.pkg.dev/sleeper-446416/auth/production
-          name: production
+          name: auth
           env:
             - name: MONGODB_URI
               valueFrom:

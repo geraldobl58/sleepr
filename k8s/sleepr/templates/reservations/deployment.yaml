@@ -15,5 +15,11 @@ spec:
         app: reservations
     spec:
       containers:
-      - image: us-east4-docker.pkg.dev/sleeper-446416/reservations/production
-        name: reservations
+        - image: us-east4-docker.pkg.dev/sleeper-446416/reservations/production
+          name: reservations
+          env:
+            - name: MONGODB_URI
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb
+                  key: connectionString
